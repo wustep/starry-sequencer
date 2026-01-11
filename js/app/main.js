@@ -11,6 +11,13 @@ var player
 var startFirstPlay = function () {
 	if (hasStarted) return
 	hasStarted = true
+	
+	// Resume AudioContext on iOS Safari (required for audio to work on mobile)
+	var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
+	if (ctx && ctx.state === "suspended") {
+		ctx.resume()
+	}
+	
 	$("#titler").fadeOut(300)
 	$("#play-overlay").fadeOut(400, function () {
 		$("#playerdiv").fadeIn(300)
