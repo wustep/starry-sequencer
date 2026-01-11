@@ -109,10 +109,102 @@ div.player button {
 }
 #titler {
 	display: none;
-	-webkit-user-select: none; /* Chrome/Safari */
-	-moz-user-select: none; /* Firefox */
-	-ms-user-select: none; /* IE10+ */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
 	color: white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 60;
+	margin-top: -60px;
+}
+
+#titler h1 {
+	font-family: "Oswald", "Helvetica Neue", Arial, sans-serif;
+	font-size: 3.2em;
+	margin: 0 0 0.15em 0;
+	font-weight: 300;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	text-shadow: 
+		0 0 20px rgba(0, 0, 0, 0.5),
+		0 2px 10px rgba(0, 0, 0, 0.4),
+		0 4px 30px rgba(0, 0, 0, 0.3);
+	line-height: 1.1;
+}
+
+#titler p {
+	font-family: "Andada", Georgia, serif;
+	font-size: 1.1em;
+	margin: 0;
+	font-weight: 400;
+	font-style: italic;
+	letter-spacing: 2px;
+	opacity: 0.85;
+	text-shadow: 
+		0 1px 6px rgba(0, 0, 0, 0.5),
+		0 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Big play button overlay */
+#play-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+#big-play-btn {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.08);
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 
+		0 4px 20px rgba(0, 0, 0, 0.25),
+		inset 0 0 20px rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	margin-top: 180px;
+}
+
+#big-play-btn:hover {
+	background: rgba(255, 255, 255, 0.18);
+	transform: scale(1.12);
+	box-shadow: 
+		0 8px 40px rgba(0, 0, 0, 0.35),
+		inset 0 0 30px rgba(255, 255, 255, 0.1);
+	border-color: rgba(255, 255, 255, 0.8);
+}
+
+#big-play-btn:active {
+	transform: scale(1.05);
+}
+
+#big-play-btn svg {
+	width: 32px;
+	height: 32px;
+	margin-left: 4px;
+	opacity: 0.85;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+	transition: opacity 0.2s ease;
+}
+
+#big-play-btn:hover svg {
+	opacity: 1;
 }
