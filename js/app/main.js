@@ -7,24 +7,53 @@ var hasStarted = false // Track if user has started playback
 var scheme = 0 // 0 = notes disappear, 1 = notes stay on
 var player
 
+// Unlock and resume audio context for iOS Safari
+var unlockAudio = function (callback) {
+	var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
+	if (!ctx) {
+		callback && callback()
+		return
+	}
+	
+	if (ctx.state === "suspended") {
+		// Resume the audio context
+		var resumePromise = ctx.resume()
+		if (resumePromise && resumePromise.then) {
+			resumePromise.then(function () {
+				// Play a silent buffer to fully unlock audio on iOS
+				var silentBuffer = ctx.createBuffer(1, 1, 22050)
+				var source = ctx.createBufferSource()
+				source.buffer = silentBuffer
+				source.connect(ctx.destination)
+				source.start(0)
+				callback && callback()
+			}).catch(function () {
+				callback && callback()
+			})
+		} else {
+			callback && callback()
+		}
+	} else {
+		callback && callback()
+	}
+}
+
 // Start playback for the first time
 var startFirstPlay = function () {
 	if (hasStarted) return
 	hasStarted = true
 	
-	// Resume AudioContext on iOS Safari (required for audio to work on mobile)
-	var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
-	if (ctx && ctx.state === "suspended") {
-		ctx.resume()
-	}
-	
 	$("#titler").fadeOut(300)
 	$("#play-overlay").fadeOut(400, function () {
 		$("#playerdiv").fadeIn(300)
-		if (player && !MIDI.Player.playing) {
-			MIDI.Player.resume()
-			$("#playPauseStop").button({ icon: "ui-icon-pause" })
-		}
+		
+		// Unlock audio first, then start playing
+		unlockAudio(function () {
+			if (player && !MIDI.Player.playing) {
+				MIDI.Player.resume()
+				$("#playPauseStop").button({ icon: "ui-icon-pause" })
+			}
+		})
 	})
 }
 
@@ -40,7 +69,10 @@ var pausePlayStop = function (stop) {
 		MIDI.Player.pause(true)
 	} else {
 		d.button({ icon: "ui-icon-pause" })
-		MIDI.Player.resume()
+		// Unlock audio on iOS before resuming
+		unlockAudio(function () {
+			MIDI.Player.resume()
+		})
 	}
 }
 
@@ -138,7 +170,10 @@ var MIDIPlayerPercentage = function (player) {
 	player.getNextSong = function (n) {
 		clearColors()
 		songid = Math.abs((songid + n) % song.length)
-		player.loadFile(song[songid], player.start)
+		// Unlock audio on iOS before loading next song
+		unlockAudio(function () {
+			player.loadFile(song[songid], player.start)
+		})
 		$("#nowplaying").html(songNames[songid])
 		$("#playPauseStop").button({ icon: "ui-icon-pause" })
 	}
@@ -155,6 +190,17 @@ var MIDIPlayerPercentage = function (player) {
 		}
 	})
 }
+
+// Handle page visibility changes (for iOS app switching)
+document.addEventListener("visibilitychange", function () {
+	if (document.visibilityState === "visible" && hasStarted) {
+		// Try to resume audio context when returning to page
+		var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
+		if (ctx && ctx.state === "suspended") {
+			ctx.resume()
+		}
+	}
+})
 
 // Set up jQuery buttons and initialize app
 $(function () {
