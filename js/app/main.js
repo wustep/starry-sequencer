@@ -5,6 +5,7 @@
 var songid = 0 // Current song
 var hasStarted = false // Track if user has started playback
 var midiInitialized = false // Track if MIDI has been initialized
+var isLoading = false // Track if MIDI is currently loading
 var scheme = 0 // 0 = notes disappear, 1 = notes stay on
 var player
 var colorElements = [] // Store color elements for piano keys
@@ -17,7 +18,13 @@ var initializeMIDI = function (onSuccess) {
 	}
 	midiInitialized = true
 
+	// Create loader but we'll hide it since we use our own loading indicator
 	MIDI.loader = new sketch.ui.Timer()
+	// Hide the default sk-timer loading animation
+	setTimeout(function() {
+		$(".sk-timer").hide()
+	}, 0)
+
 	MIDI.loadPlugin({
 		soundfontUrl: "./midi/",
 		onprogress: function (state, progress) {
@@ -55,6 +62,7 @@ var initializeMIDI = function (onSuccess) {
 
 			// Load and play the first song
 			player.loadFile(song[songid], function () {
+				isLoading = false
 				$("#nowplaying").html(songNames[songid])
 				player.start()
 				onSuccess && onSuccess()
@@ -65,17 +73,22 @@ var initializeMIDI = function (onSuccess) {
 
 // Start playback for the first time
 var startFirstPlay = function () {
-	if (hasStarted) return
+	if (hasStarted || isLoading) return
 	hasStarted = true
+	isLoading = true
 
-	$("#titler").fadeOut(300)
-	$("#play-overlay").fadeOut(400, function () {
-		$("#playerdiv").fadeIn(300)
-		$("#playPauseStop").button({ icon: "ui-icon-pause" })
+	// Show loading state on the play button
+	$("#big-play-btn").addClass("loading")
 
-		// Initialize MIDI during user gesture (required for iOS Safari)
-		// The AudioContext is created inside loadPlugin, so iOS will allow it
-		initializeMIDI()
+	// Initialize MIDI during user gesture (required for iOS Safari)
+	// The AudioContext is created inside loadPlugin, so iOS will allow it
+	initializeMIDI(function () {
+		// MIDI loaded, now fade out and show player
+		$("#titler").fadeOut(300)
+		$("#play-overlay").fadeOut(400, function () {
+			$("#playerdiv").fadeIn(300)
+			$("#playPauseStop").button({ icon: "ui-icon-pause" })
+		})
 	})
 }
 

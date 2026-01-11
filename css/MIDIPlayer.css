@@ -301,6 +301,43 @@ div.player .ui-slider-range {
 	opacity: 1;
 }
 
+/* Loading spinner for play button */
+#big-play-btn .loading-spinner {
+	display: none;
+	width: clamp(28px, 5vw + 10px, 40px);
+	height: clamp(28px, 5vw + 10px, 40px);
+	border: 3px solid rgba(255, 255, 255, 0.2);
+	border-top-color: rgba(255, 255, 255, 0.9);
+	border-radius: 50%;
+	animation: spin 0.9s linear infinite;
+	position: absolute;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Loading state - show spinner, hide play icon */
+#big-play-btn.loading .play-icon {
+	display: none;
+}
+
+#big-play-btn.loading .loading-spinner {
+	display: block;
+}
+
+#big-play-btn.loading {
+	cursor: wait;
+	pointer-events: none;
+}
+
+/* Hide the default sk-timer loading animation */
+.sk-timer {
+	display: none !important;
+}
+
 /* Info dialog styling */
 .ui-dialog.ui-widget.ui-widget-content {
 	background: linear-gradient(
