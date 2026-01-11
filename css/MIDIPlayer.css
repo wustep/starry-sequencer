@@ -471,6 +471,11 @@ div.player .ui-slider-range {
 		height: 12vh;
 		line-height: 12vh;
 	}
+
+	/* Hide tooltips on mobile/touch devices */
+	.player-tooltip.ui-tooltip {
+		display: none !important;
+	}
 }
 
 @media (max-width: 480px) {
