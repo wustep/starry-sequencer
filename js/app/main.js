@@ -4,61 +4,84 @@
 
 var songid = 0 // Current song
 var hasStarted = false // Track if user has started playback
+var midiInitialized = false // Track if MIDI has been initialized
 var scheme = 0 // 0 = notes disappear, 1 = notes stay on
 var player
+var colorElements = [] // Store color elements for piano keys
 
-// Unlock and resume audio context for iOS Safari
-var unlockAudio = function (callback) {
-	var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
-	if (!ctx) {
-		callback && callback()
+// Initialize MIDI - must be called during user gesture for iOS
+var initializeMIDI = function (onSuccess) {
+	if (midiInitialized) {
+		onSuccess && onSuccess()
 		return
 	}
-	
-	if (ctx.state === "suspended") {
-		// Resume the audio context
-		var resumePromise = ctx.resume()
-		if (resumePromise && resumePromise.then) {
-			resumePromise.then(function () {
-				// Play a silent buffer to fully unlock audio on iOS
-				var silentBuffer = ctx.createBuffer(1, 1, 22050)
-				var source = ctx.createBufferSource()
-				source.buffer = silentBuffer
-				source.connect(ctx.destination)
-				source.start(0)
-				callback && callback()
-			}).catch(function () {
-				callback && callback()
+	midiInitialized = true
+
+	MIDI.loader = new sketch.ui.Timer()
+	MIDI.loadPlugin({
+		soundfontUrl: "./midi/",
+		onprogress: function (state, progress) {
+			MIDI.loader.setValue(progress * 100)
+		},
+		onsuccess: function () {
+			player = MIDI.Player
+			player.timeWarp = 1
+
+			// Set up piano key color listener
+			var colorMap = MIDI.Synesthesia.map()
+			player.addListener(function (data) {
+				var pianoKey = data.note - 21
+				var d = colorElements[pianoKey]
+				if (d) {
+					if (data.message === 144) {
+						d.style.background = colorMap2[data.note - 27]
+						d.classList.add("pressed")
+						if (scheme === 1) {
+							d.style.opacity = 1.0
+						}
+					} else {
+						if (scheme === 0) {
+							d.style.background = ""
+						}
+						if (scheme === 1) {
+							d.style.opacity = 0.6
+						}
+						d.classList.remove("pressed")
+					}
+				}
 			})
-		} else {
-			callback && callback()
-		}
-	} else {
-		callback && callback()
-	}
+
+			MIDIPlayerPercentage(player)
+
+			// Load and play the first song
+			player.loadFile(song[songid], function () {
+				$("#nowplaying").html(songNames[songid])
+				player.start()
+				onSuccess && onSuccess()
+			})
+		},
+	})
 }
 
 // Start playback for the first time
 var startFirstPlay = function () {
 	if (hasStarted) return
 	hasStarted = true
-	
+
 	$("#titler").fadeOut(300)
 	$("#play-overlay").fadeOut(400, function () {
 		$("#playerdiv").fadeIn(300)
-		
-		// Unlock audio first, then start playing
-		unlockAudio(function () {
-			if (player && !MIDI.Player.playing) {
-				MIDI.Player.resume()
-				$("#playPauseStop").button({ icon: "ui-icon-pause" })
-			}
-		})
+		$("#playPauseStop").button({ icon: "ui-icon-pause" })
+
+		// Initialize MIDI during user gesture (required for iOS Safari)
+		// The AudioContext is created inside loadPlugin, so iOS will allow it
+		initializeMIDI()
 	})
 }
 
 // Toggle between Pause and Play modes.
 var pausePlayStop = function (stop) {
+	if (!player) return // MIDI not initialized yet
 	var d = $("#playPauseStop")
 	if (stop) {
 		d.button({ icon: "ui-icon-play" })
@@ -69,10 +92,15 @@ var pausePlayStop = function (stop) {
 		MIDI.Player.pause(true)
 	} else {
 		d.button({ icon: "ui-icon-pause" })
-		// Unlock audio on iOS before resuming
-		unlockAudio(function () {
+		// Resume audio context if suspended (for iOS)
+		var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
+		if (ctx && ctx.state === "suspended") {
+			ctx.resume().then(function() {
+				MIDI.Player.resume()
+			})
+		} else {
 			MIDI.Player.resume()
-		})
+		}
 	}
 }
 
@@ -170,10 +198,15 @@ var MIDIPlayerPercentage = function (player) {
 	player.getNextSong = function (n) {
 		clearColors()
 		songid = Math.abs((songid + n) % song.length)
-		// Unlock audio on iOS before loading next song
-		unlockAudio(function () {
+		// Resume audio context if needed (for iOS after backgrounding)
+		var ctx = MIDI.WebAudio && MIDI.WebAudio.getContext && MIDI.WebAudio.getContext()
+		if (ctx && ctx.state === "suspended") {
+			ctx.resume().then(function() {
+				player.loadFile(song[songid], player.start)
+			})
+		} else {
 			player.loadFile(song[songid], player.start)
-		})
+		}
 		$("#nowplaying").html(songNames[songid])
 		$("#playPauseStop").button({ icon: "ui-icon-pause" })
 	}
@@ -263,7 +296,7 @@ $(function () {
 	})
 })
 
-// Initialize MIDI player on window load
+// Set up visual elements on window load (but defer MIDI init until user interaction for iOS)
 eventjs.add(window, "load", function (event) {
 	// Load fonts
 	var link = document.createElement("link")
@@ -272,58 +305,12 @@ eventjs.add(window, "load", function (event) {
 	link.type = "text/css"
 	document.body.appendChild(link)
 
-	// Load up the piano keys
+	// Load up the piano keys (visual only - MIDI initialized on user click)
 	var colors = document.getElementById("colors")
-	var colorElements = []
 	for (var n = 0; n < 88; n++) {
 		var d = document.createElement("div")
 		d.innerHTML = MIDI.noteToKey[n + 21]
 		colorElements.push(d)
 		colors.appendChild(d)
 	}
-
-	// Initialize MIDI
-	MIDI.loader = new sketch.ui.Timer()
-	MIDI.loadPlugin({
-		soundfontUrl: "./midi/",
-		onprogress: function (state, progress) {
-			MIDI.loader.setValue(progress * 100)
-		},
-		onsuccess: function () {
-			player = MIDI.Player
-			player.timeWarp = 1
-
-			// Load file but don't autoplay - wait for user to click play overlay
-			player.loadFile(song[0], function () {
-				// File loaded, ready to play when user clicks
-			})
-			$("#nowplaying").html(songNames[songid])
-
-			// Control the piano keys colors
-			var colorMap = MIDI.Synesthesia.map()
-			player.addListener(function (data) {
-				var pianoKey = data.note - 21
-				var d = colorElements[pianoKey]
-				if (d) {
-					if (data.message === 144) {
-						d.style.background = colorMap2[data.note - 27]
-						d.classList.add("pressed")
-						if (scheme === 1) {
-							d.style.opacity = 1.0
-						}
-					} else {
-						if (scheme === 0) {
-							d.style.background = ""
-						}
-						if (scheme === 1) {
-							d.style.opacity = 0.6
-						}
-						d.classList.remove("pressed")
-					}
-				}
-			})
-
-			MIDIPlayerPercentage(player)
-		},
-	})
 })
