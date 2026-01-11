@@ -51,46 +51,67 @@ h1 {
 }
 
 div.player button {
-	background: linear-gradient(
-		145deg,
-		rgba(255, 255, 255, 0.15) 0%,
-		rgba(255, 255, 255, 0.05) 100%
-	);
-	height: 28px;
-	width: 28px;
+	background: rgba(255, 255, 255, 0.08);
+	height: 30px;
+	width: 30px;
 	border-radius: 50%;
 	flex: 0 0 auto;
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25),
-		inset 0 1px 0 rgba(255, 255, 255, 0.1);
-	transition: all 0.2s ease;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+	transition: background 0.15s ease, border-color 0.15s ease,
+		box-shadow 0.15s ease;
 	cursor: pointer;
+	outline: none;
+	position: relative;
 }
 
 div.player button:hover {
-	background: linear-gradient(
-		145deg,
-		rgba(255, 255, 255, 0.25) 0%,
-		rgba(255, 255, 255, 0.12) 100%
-	);
-	transform: translateY(-1px);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35),
-		inset 0 1px 0 rgba(255, 255, 255, 0.15);
-	border-color: rgba(255, 255, 255, 0.35);
+	background: rgba(255, 255, 255, 0.14);
+	border-color: rgba(255, 255, 255, 0.22);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-div.player button:active {
-	transform: translateY(0);
-	background: rgba(255, 255, 255, 0.08);
+div.player button:focus-visible {
+	box-shadow: 0 0 0 2px rgba(253, 246, 111, 0.5), 0 2px 6px rgba(0, 0, 0, 0.25);
+	border-color: rgba(253, 246, 111, 0.6);
+}
+
+div.player button:active,
+div.player button.ui-state-active {
+	background: rgba(255, 255, 255, 0.04);
+	border-color: rgba(255, 255, 255, 0.08);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+	transition: all 0.05s ease;
 }
 
 div.player button .ui-icon {
-	filter: invert(1) brightness(1.2);
-	opacity: 0.9;
+	filter: invert(1);
+	opacity: 0.75;
+	transition: opacity 0.12s ease;
 }
 
 div.player button:hover .ui-icon {
-	opacity: 1;
+	opacity: 0.95;
+}
+
+div.player button:active .ui-icon {
+	opacity: 0.6;
+}
+
+/* Player button tooltips (jQuery UI) */
+.player-tooltip.ui-tooltip {
+	background: rgba(15, 15, 22, 0.95) !important;
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	color: rgba(255, 255, 255, 0.9) !important;
+	padding: 6px 10px !important;
+	border-radius: 6px !important;
+	font-family: "Crimson Text", Georgia, serif !important;
+	font-size: 12px !important;
+	letter-spacing: 0.3px;
+	border: 1px solid rgba(255, 255, 255, 0.12) !important;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+	max-width: none !important;
 }
 
 /* Slider styling */
@@ -115,11 +136,21 @@ div.player .ui-slider-handle {
 	cursor: pointer;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	outline: none;
 }
 
 div.player .ui-slider-handle:hover {
 	transform: scale(1.15);
 	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+
+div.player .ui-slider-handle:focus {
+	box-shadow: 0 0 0 3px rgba(253, 246, 111, 0.4), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+div.player .ui-slider-handle:active {
+	transform: scale(0.95);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 div.player .ui-slider-range {
@@ -170,25 +201,26 @@ div.player .ui-slider-range {
 }
 
 #titler h1 {
-	font-family: "Oswald", "Helvetica Neue", Arial, sans-serif;
-	font-size: clamp(1.5rem, 5vw + 0.5rem, 3.2rem);
-	margin: 0 0 0.15em 0;
+	font-family: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+	font-size: clamp(1.8rem, 6vw + 0.5rem, 3.8rem);
+	margin: 0 0 0.2em 0;
 	font-weight: 300;
-	letter-spacing: clamp(1px, 0.3vw, 3px);
-	text-transform: uppercase;
-	text-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.4),
-		0 4px 30px rgba(0, 0, 0, 0.3);
+	letter-spacing: clamp(2px, 0.5vw, 6px);
+	text-shadow: 0 0 30px rgba(253, 246, 111, 0.3),
+		0 0 60px rgba(207, 170, 40, 0.2), 0 2px 10px rgba(0, 0, 0, 0.5),
+		0 4px 30px rgba(0, 0, 0, 0.4);
 	line-height: 1.1;
 }
 
 #titler p {
-	font-family: "Andada", Georgia, serif;
-	font-size: clamp(0.85rem, 1.5vw + 0.3rem, 1.1rem);
+	font-family: "Crimson Text", "Georgia", serif;
+	font-size: clamp(0.9rem, 1.8vw + 0.3rem, 1.2rem);
 	margin: 0;
 	font-weight: 400;
-	letter-spacing: clamp(1px, 0.2vw, 2px);
-	opacity: 0.85;
-	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5), 0 2px 15px rgba(0, 0, 0, 0.3);
+	font-style: italic;
+	letter-spacing: clamp(1px, 0.3vw, 3px);
+	opacity: 0.9;
+	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6), 0 2px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Big play button overlay */
@@ -223,7 +255,7 @@ div.player .ui-slider-range {
 		inset 0 0 20px rgba(255, 255, 255, 0.05);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	margin-top: clamp(120px, 15vw + 50px, 220px);
+	margin-top: 140px;
 }
 
 #big-play-btn:hover {
@@ -277,7 +309,7 @@ div.player .ui-slider-range {
 }
 
 .ui-dialog .ui-dialog-title {
-	font-family: "Oswald", "Helvetica Neue", Arial, sans-serif !important;
+	font-family: "Cormorant Garamond", "Garamond", serif !important;
 	font-size: 0.95em !important;
 	font-weight: 400 !important;
 	letter-spacing: 2px !important;
@@ -292,32 +324,62 @@ div.player .ui-slider-range {
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
-	background: rgba(255, 255, 255, 0.1) !important;
-	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	background: rgba(255, 255, 255, 0.06) !important;
+	border: 1px solid rgba(255, 255, 255, 0.1) !important;
 	border-radius: 50% !important;
-	width: 22px !important;
-	height: 22px !important;
+	width: 20px !important;
+	height: 20px !important;
 	top: 50% !important;
 	right: 14px !important;
-	margin-top: -11px !important;
+	margin-top: -10px !important;
 	padding: 0 !important;
-	transition: all 0.2s ease !important;
+	transition: background 0.15s ease, border-color 0.15s ease !important;
+	outline: none !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:hover {
-	background: rgba(255, 100, 100, 0.25) !important;
-	border-color: rgba(255, 100, 100, 0.5) !important;
+	background: rgba(255, 100, 100, 0.15) !important;
+	border-color: rgba(255, 100, 100, 0.35) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:focus-visible {
+	box-shadow: 0 0 0 2px rgba(253, 246, 111, 0.4) !important;
+	border-color: rgba(253, 246, 111, 0.5) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:active {
+	background: rgba(255, 80, 80, 0.25) !important;
+	transition: all 0.05s ease !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close .ui-button-icon {
-	filter: invert(1) brightness(1.3) !important;
+	filter: invert(1) !important;
+	opacity: 0.65 !important;
+	transition: opacity 0.12s ease !important;
+	width: 12px !important;
+	height: 12px !important;
+	margin: 0 !important;
+	position: static !important;
+	left: auto !important;
+	top: auto !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover .ui-button-icon {
+	opacity: 0.9 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:active .ui-button-icon {
+	opacity: 0.6 !important;
 }
 
 .ui-dialog .ui-dialog-content {
 	background: transparent !important;
 	color: rgba(255, 255, 255, 0.9) !important;
 	padding: 16px 18px 18px 18px !important;
-	font-family: "Georgia", serif !important;
+	font-family: "Crimson Text", "Georgia", serif !important;
 	font-size: 0.85em !important;
 	line-height: 1.8 !important;
 	letter-spacing: 0.3px !important;
@@ -403,8 +465,8 @@ div.player .ui-slider-range {
 	}
 
 	div.player button {
-		height: 20px;
-		width: 20px;
+		height: 24px;
+		width: 24px;
 	}
 
 	#titler {
