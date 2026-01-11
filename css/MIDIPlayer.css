@@ -50,13 +50,13 @@ h1 {
 	line-height: 1.2;
 }
 
-div.player button {
-	background: rgba(255, 255, 255, 0.08);
+div.player button.ui-button {
+	background: rgba(255, 255, 255, 0.08) !important;
 	height: 30px;
 	width: 30px;
-	border-radius: 50%;
+	border-radius: 50% !important;
 	flex: 0 0 auto;
-	border: 1px solid rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(255, 255, 255, 0.12) !important;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 	transition: background 0.15s ease, border-color 0.15s ease,
 		box-shadow 0.15s ease;
@@ -65,37 +65,44 @@ div.player button {
 	position: relative;
 }
 
-div.player button:hover {
-	background: rgba(255, 255, 255, 0.14);
-	border-color: rgba(255, 255, 255, 0.22);
+div.player button.ui-button:hover,
+div.player button.ui-button.ui-state-hover {
+	background: rgba(255, 255, 255, 0.14) !important;
+	border-color: rgba(255, 255, 255, 0.22) !important;
 	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-div.player button:focus-visible {
-	box-shadow: 0 0 0 2px rgba(253, 246, 111, 0.5), 0 2px 6px rgba(0, 0, 0, 0.25);
-	border-color: rgba(253, 246, 111, 0.6);
+div.player button.ui-button:focus,
+div.player button.ui-button.ui-state-focus {
+	background: rgba(255, 255, 255, 0.08) !important;
+	border-color: rgba(255, 255, 255, 0.25) !important;
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-div.player button:active,
-div.player button.ui-state-active {
-	background: rgba(255, 255, 255, 0.04);
-	border-color: rgba(255, 255, 255, 0.08);
-	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+div.player button.ui-button:active,
+div.player button.ui-button.ui-state-active {
+	background: rgba(0, 0, 0, 0.15) !important;
+	border-color: rgba(255, 255, 255, 0.06) !important;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
 	transition: all 0.05s ease;
 }
 
-div.player button .ui-icon {
-	filter: invert(1);
+div.player button.ui-button .ui-icon {
+	filter: invert(1) !important;
 	opacity: 0.75;
 	transition: opacity 0.12s ease;
 }
 
-div.player button:hover .ui-icon {
+div.player button.ui-button:hover .ui-icon,
+div.player button.ui-button.ui-state-hover .ui-icon {
 	opacity: 0.95;
+	filter: invert(1) !important;
 }
 
-div.player button:active .ui-icon {
+div.player button.ui-button:active .ui-icon,
+div.player button.ui-button.ui-state-active .ui-icon {
 	opacity: 0.6;
+	filter: invert(1) !important;
 }
 
 /* Player button tooltips (jQuery UI) */
@@ -324,55 +331,71 @@ div.player .ui-slider-range {
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
-	background: rgba(255, 255, 255, 0.06) !important;
-	border: 1px solid rgba(255, 255, 255, 0.1) !important;
+	background: rgba(255, 255, 255, 0.08) !important;
+	border: 1px solid rgba(255, 255, 255, 0.12) !important;
 	border-radius: 50% !important;
-	width: 20px !important;
-	height: 20px !important;
+	width: 22px !important;
+	height: 22px !important;
 	top: 50% !important;
 	right: 14px !important;
-	margin-top: -10px !important;
+	margin-top: -11px !important;
 	padding: 0 !important;
 	transition: background 0.15s ease, border-color 0.15s ease !important;
 	outline: none !important;
-	display: flex !important;
-	align-items: center !important;
-	justify-content: center !important;
+	overflow: hidden !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:hover {
-	background: rgba(255, 100, 100, 0.15) !important;
-	border-color: rgba(255, 100, 100, 0.35) !important;
+	background: rgba(255, 255, 255, 0.14) !important;
+	border-color: rgba(255, 255, 255, 0.22) !important;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:focus-visible {
-	box-shadow: 0 0 0 2px rgba(253, 246, 111, 0.4) !important;
-	border-color: rgba(253, 246, 111, 0.5) !important;
+.ui-dialog .ui-dialog-titlebar-close:focus {
+	background: rgba(255, 255, 255, 0.08) !important;
+	border-color: rgba(255, 255, 255, 0.25) !important;
+	box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15) !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:active {
-	background: rgba(255, 80, 80, 0.25) !important;
+	background: rgba(0, 0, 0, 0.15) !important;
 	transition: all 0.05s ease !important;
 }
 
+/* Hide the default jQuery UI icon */
+.ui-dialog .ui-dialog-titlebar-close .ui-icon,
 .ui-dialog .ui-dialog-titlebar-close .ui-button-icon {
-	filter: invert(1) !important;
-	opacity: 0.65 !important;
-	transition: opacity 0.12s ease !important;
-	width: 12px !important;
-	height: 12px !important;
-	margin: 0 !important;
-	position: static !important;
-	left: auto !important;
-	top: auto !important;
+	display: none !important;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:hover .ui-button-icon {
-	opacity: 0.9 !important;
+/* Create custom X icon with CSS */
+.ui-dialog .ui-dialog-titlebar-close::before,
+.ui-dialog .ui-dialog-titlebar-close::after {
+	content: "" !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	width: 10px !important;
+	height: 1.5px !important;
+	background: rgba(255, 255, 255, 0.7) !important;
+	transition: background 0.12s ease !important;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:active .ui-button-icon {
-	opacity: 0.6 !important;
+.ui-dialog .ui-dialog-titlebar-close::before {
+	transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close::after {
+	transform: translate(-50%, -50%) rotate(-45deg) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover::before,
+.ui-dialog .ui-dialog-titlebar-close:hover::after {
+	background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:active::before,
+.ui-dialog .ui-dialog-titlebar-close:active::after {
+	background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .ui-dialog .ui-dialog-content {
