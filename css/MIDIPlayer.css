@@ -126,29 +126,24 @@ div.player button {
 
 #titler h1 {
 	font-family: "Oswald", "Helvetica Neue", Arial, sans-serif;
-	font-size: 3.2em;
+	font-size: clamp(1.5rem, 5vw + 0.5rem, 3.2rem);
 	margin: 0 0 0.15em 0;
 	font-weight: 300;
-	letter-spacing: 3px;
+	letter-spacing: clamp(1px, 0.3vw, 3px);
 	text-transform: uppercase;
-	text-shadow: 
-		0 0 20px rgba(0, 0, 0, 0.5),
-		0 2px 10px rgba(0, 0, 0, 0.4),
+	text-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.4),
 		0 4px 30px rgba(0, 0, 0, 0.3);
 	line-height: 1.1;
 }
 
 #titler p {
 	font-family: "Andada", Georgia, serif;
-	font-size: 1.1em;
+	font-size: clamp(0.85rem, 1.5vw + 0.3rem, 1.1rem);
 	margin: 0;
 	font-weight: 400;
-	font-style: italic;
-	letter-spacing: 2px;
+	letter-spacing: clamp(1px, 0.2vw, 2px);
 	opacity: 0.85;
-	text-shadow: 
-		0 1px 6px rgba(0, 0, 0, 0.5),
-		0 2px 15px rgba(0, 0, 0, 0.3);
+	text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5), 0 2px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Big play button overlay */
@@ -163,11 +158,13 @@ div.player button {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+	background: rgba(0, 0, 0, 0.25);
 }
 
 #big-play-btn {
-	width: 72px;
-	height: 72px;
+	display: none;
+	width: clamp(52px, 8vw + 20px, 72px);
+	height: clamp(52px, 8vw + 20px, 72px);
 	border-radius: 50%;
 	background: rgba(255, 255, 255, 0.08);
 	border: 2px solid rgba(255, 255, 255, 0.5);
@@ -175,19 +172,17 @@ div.player button {
 	align-items: center;
 	justify-content: center;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	box-shadow: 
-		0 4px 20px rgba(0, 0, 0, 0.25),
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25),
 		inset 0 0 20px rgba(255, 255, 255, 0.05);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
-	margin-top: 180px;
+	margin-top: clamp(120px, 15vw + 50px, 220px);
 }
 
 #big-play-btn:hover {
 	background: rgba(255, 255, 255, 0.18);
 	transform: scale(1.12);
-	box-shadow: 
-		0 8px 40px rgba(0, 0, 0, 0.35),
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35),
 		inset 0 0 30px rgba(255, 255, 255, 0.1);
 	border-color: rgba(255, 255, 255, 0.8);
 }
@@ -197,8 +192,8 @@ div.player button {
 }
 
 #big-play-btn svg {
-	width: 32px;
-	height: 32px;
+	width: clamp(22px, 4vw + 8px, 32px);
+	height: clamp(22px, 4vw + 8px, 32px);
 	margin-left: 4px;
 	opacity: 0.85;
 	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
@@ -207,4 +202,60 @@ div.player button {
 
 #big-play-btn:hover svg {
 	opacity: 1;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+	body {
+		margin: 0 20px;
+	}
+
+	div#playerdiv {
+		margin: 20px;
+	}
+
+	div.player {
+		padding: 12px 15px;
+	}
+
+	#colors div {
+		width: 12.5vw;
+		height: 12vh;
+		line-height: 12vh;
+	}
+}
+
+@media (max-width: 480px) {
+	body {
+		margin: 0 10px;
+	}
+
+	div#playerdiv {
+		margin: 15px 10px;
+	}
+
+	div.player {
+		padding: 10px 12px;
+		gap: 6px;
+	}
+
+	div.player button {
+		height: 20px;
+		width: 20px;
+	}
+
+	#titler {
+		width: 90%;
+	}
+
+	#colors div {
+		width: 16.6vw;
+		height: 10vh;
+		line-height: 10vh;
+	}
+
+	#info-dialog {
+		width: 90% !important;
+		max-width: 300px;
+	}
 }
