@@ -13,12 +13,12 @@ body {
 	background-size: cover;
 }
 div#playerdiv {
-	opacity: 0.7;
 	cursor: move;
-	margin: 50px 90px;
-	background: rgba(255, 255, 255, 0.5);
-	border-radius: 11px;
-	position: relative;
+	margin: 30px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
 	z-index: 10;
 	text-align: center;
 }
@@ -28,50 +28,22 @@ div.player {
 	justify-content: center;
 	align-items: center;
 	gap: 8px;
-	background-image: -webkit-gradient(
-		linear,
-		left top,
-		left bottom,
-		from(rgba(66, 66, 66, 1)),
-		to(rgba(22, 22, 22, 1))
+	background: linear-gradient(
+		135deg,
+		rgba(30, 30, 40, 0.85) 0%,
+		rgba(15, 15, 25, 0.9) 100%
 	);
-	background-image: -webkit-linear-gradient(
-		top,
-		rgba(66, 66, 66, 1) 0%,
-		rgba(22, 22, 22, 1) 100%
-	);
-	background-image: -moz-linear-gradient(
-		top,
-		rgba(66, 66, 66, 1) 0%,
-		rgba(22, 22, 22, 1) 100%
-	);
-	background-image: -ms-gradient(
-		top,
-		rgba(66, 66, 66, 1) 0%,
-		rgba(22, 22, 22, 1) 100%
-	);
-	background-image: -o-gradient(
-		top,
-		rgba(66, 66, 66, 1) 0%,
-		rgba(22, 22, 22, 1) 100%
-	);
-	background-image: linear-gradient(
-		top,
-		rgba(66, 66, 66, 1) 0%,
-		rgba(22, 22, 22, 1) 100%
-	);
-	padding: 15px 20px;
-	border: 1px solid #000;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	color: #ffffff;
-	color: rgba(255, 255, 255, 0.8);
-	text-shadow: 1px 1px 2px #000;
-	-moz-text-shadow: 1px 1px 2px #000;
-	min-height: 33px;
+	padding: 12px 18px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 12px;
+	color: rgba(255, 255, 255, 0.9);
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+	min-height: 28px;
 	margin: 0 auto;
-	float: right;
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 h1 {
@@ -79,11 +51,84 @@ h1 {
 }
 
 div.player button {
-	background-color: whitesmoke;
-	height: 23px;
-	width: 23px;
-	border-radius: 11px;
+	background: linear-gradient(
+		145deg,
+		rgba(255, 255, 255, 0.15) 0%,
+		rgba(255, 255, 255, 0.05) 100%
+	);
+	height: 28px;
+	width: 28px;
+	border-radius: 50%;
 	flex: 0 0 auto;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+div.player button:hover {
+	background: linear-gradient(
+		145deg,
+		rgba(255, 255, 255, 0.25) 0%,
+		rgba(255, 255, 255, 0.12) 100%
+	);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35),
+		inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.35);
+}
+
+div.player button:active {
+	transform: translateY(0);
+	background: rgba(255, 255, 255, 0.08);
+}
+
+div.player button .ui-icon {
+	filter: invert(1) brightness(1.2);
+	opacity: 0.9;
+}
+
+div.player button:hover .ui-icon {
+	opacity: 1;
+}
+
+/* Slider styling */
+div.player .ui-slider {
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 4px;
+	height: 6px;
+}
+
+div.player .ui-slider-handle {
+	background: linear-gradient(
+		145deg,
+		rgba(255, 255, 255, 0.9) 0%,
+		rgba(220, 220, 230, 0.85) 100%
+	);
+	border: none;
+	border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	top: -5px;
+	cursor: pointer;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+div.player .ui-slider-handle:hover {
+	transform: scale(1.15);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+
+div.player .ui-slider-range {
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.5) 0%,
+		rgba(180, 200, 255, 0.6) 100%
+	);
+	border-radius: 4px;
 }
 
 #colors div {
@@ -161,14 +206,16 @@ div.player button {
 	background: rgba(0, 0, 0, 0.25);
 }
 
-#big-play-btn {
+#big-play-btn-wrapper {
 	display: none;
+}
+#big-play-btn {
+	display: flex;
 	width: clamp(52px, 8vw + 20px, 72px);
 	height: clamp(52px, 8vw + 20px, 72px);
 	border-radius: 50%;
 	background: rgba(255, 255, 255, 0.08);
 	border: 2px solid rgba(255, 255, 255, 0.5);
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -202,6 +249,122 @@ div.player button {
 
 #big-play-btn:hover svg {
 	opacity: 1;
+}
+
+/* Info dialog styling */
+.ui-dialog.ui-widget.ui-widget-content {
+	background: linear-gradient(
+		145deg,
+		rgba(25, 25, 35, 0.95) 0%,
+		rgba(12, 12, 20, 0.98) 100%
+	) !important;
+	backdrop-filter: blur(24px) !important;
+	-webkit-backdrop-filter: blur(24px) !important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
+	border-radius: 14px !important;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 8px 20px rgba(0, 0, 0, 0.25),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+	padding: 0 !important;
+	overflow: hidden;
+}
+
+.ui-dialog .ui-dialog-titlebar.ui-widget-header {
+	background: transparent !important;
+	border: none !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+	padding: 14px 18px !important;
+	border-radius: 14px 14px 0 0 !important;
+}
+
+.ui-dialog .ui-dialog-title {
+	font-family: "Oswald", "Helvetica Neue", Arial, sans-serif !important;
+	font-size: 0.95em !important;
+	font-weight: 400 !important;
+	letter-spacing: 2px !important;
+	text-transform: uppercase !important;
+	color: rgba(255, 255, 255, 0.95) !important;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+	margin: 0 !important;
+	width: auto !important;
+	overflow: visible !important;
+	text-overflow: clip !important;
+	white-space: nowrap !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	background: rgba(255, 255, 255, 0.1) !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-radius: 50% !important;
+	width: 22px !important;
+	height: 22px !important;
+	top: 50% !important;
+	right: 14px !important;
+	margin-top: -11px !important;
+	padding: 0 !important;
+	transition: all 0.2s ease !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+	background: rgba(255, 100, 100, 0.25) !important;
+	border-color: rgba(255, 100, 100, 0.5) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-button-icon {
+	filter: invert(1) brightness(1.3) !important;
+}
+
+.ui-dialog .ui-dialog-content {
+	background: transparent !important;
+	color: rgba(255, 255, 255, 0.9) !important;
+	padding: 16px 18px 18px 18px !important;
+	font-family: "Georgia", serif !important;
+	font-size: 0.85em !important;
+	line-height: 1.8 !important;
+	letter-spacing: 0.3px !important;
+	overflow: visible !important;
+}
+
+.ui-dialog .ui-dialog-content p {
+	margin: 0 !important;
+}
+
+.ui-dialog .ui-dialog-content .ui-icon {
+	filter: invert(1) brightness(1.2) !important;
+	opacity: 0.7;
+	display: inline-block !important;
+	vertical-align: middle;
+	margin-right: 10px;
+	float: none !important;
+}
+
+.ui-dialog .ui-dialog-content #nowplaying {
+	color: rgba(255, 255, 255, 0.75);
+	font-style: italic;
+}
+
+.ui-dialog .ui-dialog-content a {
+	color: rgba(180, 200, 255, 0.95) !important;
+	text-decoration: none !important;
+	border-bottom: 1px solid rgba(180, 200, 255, 0.3);
+	transition: all 0.2s ease;
+}
+
+.ui-dialog .ui-dialog-content a:hover {
+	color: rgba(220, 230, 255, 1) !important;
+	border-bottom-color: rgba(220, 230, 255, 0.6);
+}
+
+.ui-dialog .ui-dialog-content br {
+	display: block;
+	content: "";
+	margin: 12px 0;
+}
+
+/* Widget overlay (behind dialog) */
+.ui-widget-overlay {
+	background: rgba(0, 0, 0, 0.5) !important;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
 }
 
 /* Responsive styles */

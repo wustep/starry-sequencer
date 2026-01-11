@@ -88,11 +88,14 @@
 			<p>by Stephen Wu</p>
 		</div>
 		<div id="play-overlay" onclick="startFirstPlay()">
+			<div id="big-play-btn-wrapper">
 			<div id="big-play-btn">
 				<svg viewBox="0 0 24 24" width="48" height="48">
 					<polygon points="6,4 18,12 6,20" fill="white" />
 				</svg>
 			</div>
+		</div>
+		</div>
 		</div>
 
 		<script type="text/javascript">
@@ -120,7 +123,7 @@
 
 				// Show title and play button, keep overlay visible until play is pressed
 				$("#titler").fadeIn(2000)
-				$("#big-play-btn").fadeIn(2000)
+				$("#big-play-btn-wrapper").fadeIn(2000)
 
 				$("#playerdiv").draggable()
 				$("#playPauseStop").button({
@@ -210,8 +213,8 @@
 				modal: false,
 				autoOpen: false,
 				resizable: false,
-				height: 150,
-				width: 420,
+				height: "auto",
+				width: 320,
 			})
 
 			// Clear all colors on app
