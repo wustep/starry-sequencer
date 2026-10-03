@@ -1,4 +1,4 @@
-# midi
+# Starry Night Sequencer
 Starry Night Sequencer - Visualizing MIDI files with Starry Night colors and backdrop
 
 Uses [MIDI.js](https://galactic.ink/midi-js/) and [jQueryUI](https://jqueryui.com/)! 

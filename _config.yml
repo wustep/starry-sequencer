@@ -1,0 +1,20 @@
+# GitHub Pages renders README.md as the site root; these feed the theme's
+# jekyll-seo-tag so a shared link to wustep.github.io/starry-sequencer/
+# gets a real title, description, and card. player.html carries its own tags.
+title: Starry Night Sequencer
+tagline: A MIDI visualizer inspired by Van Gogh
+description: A MIDI visualizer inspired by Van Gogh. Each note lights a block of Starry Night color; turn on note persistence and the song paints its own portrait.
+twitter:
+  username: wustep
+  card: summary_large_image
+
+# jekyll-seo-tag reads the card from page.image, not a site-level key.
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /og.png
+        width: 1200
+        height: 630
+        alt: Blocks of Starry Night color lit over Van Gogh's painting as Satie's Gymnopédie No. 1 plays.
